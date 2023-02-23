@@ -32,6 +32,7 @@ type testSuite struct {
 }
 
 func main() {
+	props := GetProperties()
 	fmt.Println("test-items-service greeting...")
 
 	router := gin.Default()
@@ -41,7 +42,7 @@ func main() {
 	router.PUT("/test_case", putTestCase)
 	router.DELETE("/test_case", deleteTestCase)
 
-	router.Run("localhost:8080")
+	router.Run(fmt.Sprintf("%s:%s", props.App.Host, props.App.Port))
 }
 
 func getTestCase(c *gin.Context) {
