@@ -8,27 +8,27 @@ import (
 	"github.com/google/uuid"
 )
 
-type test_case struct {
-	ID             uuid.UUID
-	NAME           string
-	STEPS          []string
-	PRE_CONDITOINS string
-	Author         string
+type testCase struct {
+	ID            uuid.UUID
+	Name          string
+	Steps         []string
+	PreConditions string
+	Author        string
 }
 
-type check_list struct {
-	ID             uuid.UUID
-	NAME           string
-	STEPS          []string
-	PRE_CONDITOINS string
-	Author         string
+type checkList struct {
+	ID            uuid.UUID
+	Name          string
+	Steps         []string
+	PreConditions string
+	Author        string
 }
 
-type test_suite struct {
-	ID         uuid.UUID
-	NAME       string
-	TEST_CASES []string
-	Author     string
+type testSuite struct {
+	ID        uuid.UUID
+	NAME      string
+	TestCases []string
+	Author    string
 }
 
 func main() {
@@ -39,7 +39,7 @@ func main() {
 	router.GET("/test_case", getTestCase)
 	router.POST("/test_case", postTestCase)
 	router.PUT("/test_case", putTestCase)
-	router.DELETE("/test_case", delteTestCase)
+	router.DELETE("/test_case", deleteTestCase)
 
 	router.Run("localhost:8080")
 }
@@ -62,7 +62,7 @@ func putTestCase(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, "Success")
 }
 
-func delteTestCase(c *gin.Context) {
+func deleteTestCase(c *gin.Context) {
 	fmt.Println("Test Case deleted...")
 
 	c.IndentedJSON(http.StatusOK, "Success")
