@@ -5,7 +5,31 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
+
+type test_case struct {
+	ID             uuid.UUID
+	NAME           string
+	STEPS          []string
+	PRE_CONDITOINS string
+	Author         string
+}
+
+type check_list struct {
+	ID             uuid.UUID
+	NAME           string
+	STEPS          []string
+	PRE_CONDITOINS string
+	Author         string
+}
+
+type test_suite struct {
+	ID         uuid.UUID
+	NAME       string
+	TEST_CASES []string
+	Author     string
+}
 
 func main() {
 	fmt.Println("test-items-service greeting...")
