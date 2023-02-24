@@ -1,0 +1,5 @@
+BEGIN;
+
+DROP TABLE IF EXISTS public.test_case CASCADE;
+
+END;

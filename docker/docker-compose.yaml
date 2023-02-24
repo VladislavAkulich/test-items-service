@@ -1,0 +1,8 @@
+version: '3.5'
+
+services:
+  db_pgsql:
+    container_name: db_pgsql
+    image: postgres:alpine3.17
+    ports:
+      - "5432:5432"
