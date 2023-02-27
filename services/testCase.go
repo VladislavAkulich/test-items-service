@@ -5,6 +5,7 @@ import (
 	testItems "example/test-items-service/models"
 	"example/test-items-service/repositories"
 	"example/test-items-service/repositories/client/postgresql"
+
 	"github.com/gofrs/uuid"
 )
 
@@ -26,9 +27,25 @@ func (r *TestCaseService) FindAll() (testCases []*testItems.TestCase, err error)
 }
 
 func (r *TestCaseService) FindOneById(id string) (testCase testItems.TestCase, err error) {
-	uuidFromString, err := uuid.FromString(id)
+	uuid, err := uuid.FromString(id)
 	if err != nil {
 		return testCase, err
 	}
-	return r.repository.FindOneById(uuidFromString)
+	return r.repository.FindOneById(uuid)
+}
+
+func (r *TestCaseService) AddOne(tc testItems.TestCase) (err error) {
+	return r.repository.AddOne(tc)
+}
+
+func (r *TestCaseService) UpdateOneById(tc testItems.TestCase) (testItems.TestCase, error) {
+	return r.repository.UpdateOneById(tc)
+}
+
+func (r *TestCaseService) DeleteOneById(id string) (err error) {
+	uuid, err := uuid.FromString(id)
+	if err != nil {
+		return err
+	}
+	return r.repository.DeleteOneById(uuid)
 }

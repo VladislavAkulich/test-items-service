@@ -2,11 +2,14 @@ package handlers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
+	testItems "example/test-items-service/models"
 	"example/test-items-service/services"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gofrs/uuid"
 )
 
 func GetTestCases(ctx *gin.Context) {
@@ -32,19 +35,44 @@ func GetTestCase(ctx *gin.Context) {
 }
 
 func PostTestCase(ctx *gin.Context) {
-	fmt.Println("Test Case created...")
+	testCaseService := *services.NewTestCaseService(ctx)
+	var tc testItems.TestCase
+	if err := ctx.BindJSON(&tc); err != nil {
+		log.Println("Binding is ok!")
+	}
 
-	ctx.IndentedJSON(http.StatusOK, "Success")
+	if err := testCaseService.AddOne(tc); err != nil {
+		log.Println("Test Case not created...")
+		ctx.IndentedJSON(http.StatusNotModified, gin.H{"data": err.Error()})
+	}
+	log.Println("Test Case created...")
+	ctx.IndentedJSON(http.StatusOK, gin.H{"data": tc})
 }
 
 func PutTestCase(ctx *gin.Context) {
-	fmt.Println("Test Case updated...")
+	testCaseService := *services.NewTestCaseService(ctx)
 
-	ctx.IndentedJSON(http.StatusOK, "Success")
+	tcId, _ := uuid.FromString(ctx.Param("id"))
+	var tc testItems.TestCase
+	if err := ctx.BindJSON(&tc); err != nil {
+		log.Println("Binding is ok!")
+	}
+	tc.ID = tcId
+	res, err := testCaseService.UpdateOneById(tc)
+	if err != nil {
+		ctx.IndentedJSON(http.StatusBadRequest, err.Error())
+	}
+	fmt.Println("Test Case updated...")
+	ctx.IndentedJSON(http.StatusOK, gin.H{"data": res})
 }
 
 func DeleteTestCase(ctx *gin.Context) {
-	fmt.Println("Test Case deleted...")
+	testCaseService := *services.NewTestCaseService(ctx)
 
-	ctx.IndentedJSON(http.StatusOK, "Success")
+	id := ctx.Param("id")
+	log.Println("id: " + id)
+	if err := testCaseService.DeleteOneById(id); err != nil {
+		ctx.IndentedJSON(http.StatusBadRequest, err.Error())
+	}
+	ctx.IndentedJSON(http.StatusOK, gin.H{"data": "Test case deleted with id: " + id})
 }

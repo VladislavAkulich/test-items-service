@@ -1,6 +1,7 @@
 package handlers_test
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net/http"
@@ -43,11 +44,23 @@ func TestGetTestCaseById(t *testing.T) {
 }
 
 func TestPostTestCase(t *testing.T) {
-	ts := httptest.NewServer(setupServer())
-	defer ts.Close()
+	// ts := httptest.NewServer(setupServer())
+	// defer ts.Close()
 
-	url := fmt.Sprintf("%s%s", ts.URL, mapping.RootTestCasePath)
-	resp, _ := http.Post(url, contentType, nil)
+	//url := fmt.Sprintf("%s%s", ts.URL, mapping.RootTestCasePath)
+
+	url := fmt.Sprintf("%s%s", "http://localhost:8080", mapping.RootTestCasePath)
+	body := []byte(`{
+		"name": "test case post",
+		"steps": [
+			"step post 1",
+			"step post 2"
+		],
+		"preconditions": "preconditions post",
+		"author": "author post"
+	}`)
+	fmt.Println(url)
+	resp, _ := http.Post(url, contentType, bytes.NewBuffer(body))
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 }

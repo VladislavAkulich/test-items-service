@@ -9,6 +9,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/ilyakaznacheev/cleanenv v1.4.2
 	github.com/jackc/pgx/v5 v5.0.0
+	github.com/lib/pq v1.10.0
 	github.com/stretchr/testify v1.8.1
 )
 

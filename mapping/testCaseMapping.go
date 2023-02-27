@@ -19,7 +19,7 @@ func ApplyTestCaseMapping(ctx context.Context, router *gin.Engine) {
 		api.GET("", handlers.GetTestCases)
 		api.GET(":id", handlers.GetTestCase)
 		api.POST("", handlers.PostTestCase)
-		api.PUT("", handlers.PutTestCase)
+		api.PUT(":id", handlers.PutTestCase)
 		api.DELETE(":id", handlers.DeleteTestCase)
 	}
 }
