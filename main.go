@@ -1,23 +1,21 @@
 package main
 
 import (
+	"context"
+	"example/test-items-service/mapping"
 	"fmt"
-
-	"example/test-items-service/handlers"
-
 	"github.com/gin-gonic/gin"
+
+	"example/test-items-service/properties"
 )
 
 func main() {
-	props := GetProperties()
 	fmt.Println("test-items-service greeting...")
-
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	router := gin.Default()
+	mapping.ApplyTestCaseMapping(ctx, router)
 
-	router.GET("/test_case", handlers.GetTestCase)
-	router.POST("/test_case", handlers.PostTestCase)
-	router.PUT("/test_case", handlers.PutTestCase)
-	router.DELETE("/test_case", handlers.DeleteTestCase)
-
+	props := properties.GetProperties()
 	router.Run(fmt.Sprintf("%s:%s", props.App.Host, props.App.Port))
 }

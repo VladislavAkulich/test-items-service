@@ -4,29 +4,47 @@ import (
 	"fmt"
 	"net/http"
 
+	"example/test-items-service/services"
+
 	"github.com/gin-gonic/gin"
 )
 
-func GetTestCase(c *gin.Context) {
-	fmt.Println("Getting  Test Case...")
-
-	c.IndentedJSON(http.StatusOK, "Success")
+func GetTestCases(ctx *gin.Context) {
+	testCaseService := *services.NewTestCaseService(ctx)
+	fmt.Println("Getting Test Cases...")
+	cases, err := testCaseService.FindAll()
+	if err != nil {
+		ctx.IndentedJSON(http.StatusBadRequest, err.Error())
+	}
+	ctx.IndentedJSON(http.StatusOK, cases)
 }
 
-func PostTestCase(c *gin.Context) {
+func GetTestCase(ctx *gin.Context) {
+	testCaseService := *services.NewTestCaseService(ctx)
+
+	id := ctx.Param("id")
+	fmt.Println("Getting Test Case with id = " + id)
+	testCase, err := testCaseService.FindOneById(id)
+	if err != nil {
+		ctx.IndentedJSON(http.StatusBadRequest, err.Error())
+	}
+	ctx.IndentedJSON(http.StatusOK, testCase)
+}
+
+func PostTestCase(ctx *gin.Context) {
 	fmt.Println("Test Case created...")
 
-	c.IndentedJSON(http.StatusOK, "Success")
+	ctx.IndentedJSON(http.StatusOK, "Success")
 }
 
-func PutTestCase(c *gin.Context) {
+func PutTestCase(ctx *gin.Context) {
 	fmt.Println("Test Case updated...")
 
-	c.IndentedJSON(http.StatusOK, "Success")
+	ctx.IndentedJSON(http.StatusOK, "Success")
 }
 
-func DeleteTestCase(c *gin.Context) {
+func DeleteTestCase(ctx *gin.Context) {
 	fmt.Println("Test Case deleted...")
 
-	c.IndentedJSON(http.StatusOK, "Success")
+	ctx.IndentedJSON(http.StatusOK, "Success")
 }
